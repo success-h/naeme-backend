@@ -1,0 +1,17 @@
+.DS_Store
+.next/
+db.sqlite3
+media/ 
+**/migrations/__init__.py
+**/migrations
+**/env
+**/.env
+**/__pycache__
+****/node_modules
+**/media
+**/static
+**/templates
+**/__pycache__
+**/__init__.pyc
+**/__init__.pyo
+.vercel
