@@ -21,7 +21,6 @@ DEBUG = distutils.util.strtobool(os.getenv('DEBUG'))
 
 
 ALLOWED_HOSTS = ['.vercel.app', '.now.sh', '127.0.0.1']
-# ALLOWED_HOSTS = ['*']
 
 
 INSTALLED_APPS = [
@@ -101,7 +100,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'naeme.wsgi.application'
 
 
-# Database
+# # Database
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -113,8 +112,13 @@ DATABASES = {
     }
 }
 
-# db_from_env = dj_database_url.config(conn_max_age=1000)
-# DATABASES['default'].update(db_from_env)
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
 
 
 AUTH_USER_MODEL = 'users.User'

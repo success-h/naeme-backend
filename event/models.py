@@ -7,6 +7,7 @@ from io import BytesIO
 from django.core.files import File
 import uuid
 
+
  
 
 User = get_user_model()
@@ -25,11 +26,27 @@ class Event(models.Model):
     location = models.CharField(max_length=500, blank=True, null=True)
     website = models.CharField(max_length=2000,blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    qr_code = models.ImageField(upload_to='qr_codes', blank=True, null=True)
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
     def __str__(self):
         return self.title
 
+    def generate_qr_code(self, *args, **kwargs):
+        qrcode_img = qrcode.make(f"{os.getenv('FRONTEND_URL')}/events/{self.id}".format(self.id))
+        qr_buffer = BytesIO()
+        qrcode_img.save(
+            qr_buffer, 
+            format='PNG', 
+        )
+        qr_buffer.seek(0)
+        self.qr_code = File(qr_buffer, name='qr_code.png')
+        super().save(*args, **kwargs)
+        return self.qr_code
+ 
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
 
         
 class Ticket(models.Model):
@@ -70,7 +87,6 @@ class PaidTicket(models.Model):
         super().save(*args, **kwargs)
         return self.qr_code
  
-
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)

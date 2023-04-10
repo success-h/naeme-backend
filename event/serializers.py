@@ -76,7 +76,6 @@ class TicketSerializer(serializers.ModelSerializer):
     highest_price = serializers.SerializerMethodField(
         method_name='get_highest_price',
     )
-    
  
     owner = serializers.SerializerMethodField(
         method_name='get_owner',
@@ -151,11 +150,14 @@ class EventSerializer(serializers.ModelSerializer):
             "website",
             "owner",
             "organizer",
+            "qr_code"
           ]
 
-    def get_lowest_price(self, obj):
-        if obj.tickets.exists():
-            return obj.tickets.order_by('price').first().price 
+    def get_lowest_price(self, instance):
+        if not instance.qr_code:
+            instance.generate_qr_code()
+        if instance.tickets.exists():
+            return instance.tickets.order_by('price').first().price 
 
 
     def get_highest_price(self, obj):
