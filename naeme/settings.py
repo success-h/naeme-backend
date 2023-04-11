@@ -2,7 +2,6 @@ from datetime import timedelta
 from pathlib import Path
 import os
 from dotenv import load_dotenv
-import dj_database_url
 import distutils.util
 import warnings
 warnings.filterwarnings("ignore", message="No directory at", module="whitenoise.base" )
