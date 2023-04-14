@@ -19,7 +19,7 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
 DEBUG = distutils.util.strtobool(os.getenv('DEBUG'))
 
 
-ALLOWED_HOSTS = ['.vercel.app', '.now.sh', '127.0.0.1']
+ALLOWED_HOSTS = ['.vercel.app', '.now.sh', '127.0.0.1', "localhost"]
 
 
 INSTALLED_APPS = [
