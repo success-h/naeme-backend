@@ -20,6 +20,10 @@ DEBUG = distutils.util.strtobool(os.getenv('DEBUG'))
 
 
 ALLOWED_HOSTS = ['.vercel.app', '.now.sh', '127.0.0.1', "localhost"]
+CORS_ALLOWED_ORIGINS = [
+    "https://naeme.vercel.app",
+    "http://localhost:3000",
+]
 
 
 INSTALLED_APPS = [
@@ -174,5 +178,3 @@ SIMPLE_JWT = {
     'USER_ID_CLAIM': 'user_id',
     "SIGNING_KEY": os.getenv('JWT_SECRET'),
 }
-
-CORS_ALLOW_ALL_ORIGINS = True
