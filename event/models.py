@@ -33,7 +33,7 @@ class Event(models.Model):
         return self.title
 
     def generate_qr_code(self, *args, **kwargs):
-        qrcode_img = qrcode.make(f"{os.getenv('FRONTEND_URL')}/events/{self.id}".format(self.id))
+        qrcode_img = qrcode.make(f"{os.getenv('FRONTEND_URL')}/event/{self.id}".format(self.id))
         qr_buffer = BytesIO()
         qrcode_img.save(
             qr_buffer, 
