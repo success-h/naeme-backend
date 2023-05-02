@@ -22,6 +22,8 @@ DEBUG = distutils.util.strtobool(os.getenv('DEBUG'))
 ALLOWED_HOSTS = ['.vercel.app', '.now.sh', '127.0.0.1', "localhost"]
 CORS_ALLOWED_ORIGINS = [
     "https://naeme.vercel.app",
+    "https://www.naeme.app",
+    "https://naeme.app",
     "http://localhost:3000",
     "https://co-lab-challange.vercel.app"
 ]
