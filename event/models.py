@@ -12,22 +12,46 @@ import uuid
 
 User = get_user_model()
 
+class EventCategory(models.Model):
+    name = models.CharField(max_length=100)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+
+    def __str__(self):
+        return self.name
+
+class FAQ(models.Model):
+    question= models.CharField(max_length=255, null=True, blank=True)
+    answer = models.CharField(max_length=255, null=True, blank=True)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    
+    
 class Event(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     organizer = models.CharField(max_length=255, default='Naeme') 
-    liked = models.BooleanField(default=False)
     title = models.CharField(max_length=200)
     description = models.CharField(max_length=5000, blank=True, null=True)
+    terms = models.CharField(max_length=5000, blank=True, null=True)
+    category = models.ForeignKey(EventCategory, blank=True, null=True, on_delete=models.CASCADE)
+    country = models.CharField(max_length=200, default="Nigeria")
+    event_faq = models.ManyToManyField(FAQ, blank=True)
+    state = models.CharField(max_length=200, default="Lagos")
+    city = models.CharField(max_length=200,default="Lekki")
+    venue = models.CharField(max_length=200, default="Mainland bridge")
     image = models.ImageField(upload_to='event_images', blank=True, null=True)
-    date = models.DateField(default=timezone.now)
+    start_date = models.DateField(default=timezone.now)
+    end_date = models.DateField(default=timezone.now)
     start_time = models.TimeField(default=timezone.now)
     end_time = models.TimeField(default=timezone.now)
     featured = models.BooleanField(default=False)
-    location = models.CharField(max_length=500, blank=True, null=True)
     website = models.CharField(max_length=2000,blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     qr_code = models.ImageField(upload_to='qr_codes', blank=True, null=True)
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    
+    def get_fields(self):
+        fields = super().get_fields()
+        fields['event_faq'].read_only = False
+        return fields
 
     def __str__(self):
         return self.title
@@ -46,6 +70,7 @@ class Event(models.Model):
  
 
     def save(self, *args, **kwargs):
+        
         super().save(*args, **kwargs)
 
         
@@ -53,7 +78,8 @@ class Ticket(models.Model):
     title = models.CharField(max_length=200, blank=True, null=True)
     event = models.ForeignKey('Event', on_delete=models.CASCADE, related_name='tickets')
     quantity = models.IntegerField(default=0)
-    price = models.IntegerField(default=0)
+    price = models.IntegerField(blank=True, null=True)
+    is_paid = models.BooleanField(default=True)
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False) 
      
     def __str__(self):

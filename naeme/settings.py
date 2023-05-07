@@ -25,8 +25,9 @@ CORS_ALLOWED_ORIGINS = [
     "https://www.naeme.app",
     "https://naeme.app",
     "http://localhost:3000",
-    "https://co-lab-challange.vercel.app"
-]
+    "https://co-lab-challange.vercel.app",
+    "https://www.thunderclient.com"
+] 
 
 
 INSTALLED_APPS = [

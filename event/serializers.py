@@ -1,11 +1,8 @@
 
-from event.models import *
+from .models import FAQ, Event, PaidTicket,Ticket, EventCategory
 from rest_framework import  serializers
 from django.contrib.auth import get_user_model
-import os
 from django.core.files import File
-
-
 
 class PaidTicketSerializer(serializers.ModelSerializer):
 
@@ -96,9 +93,22 @@ class TicketSerializer(serializers.ModelSerializer):
 
     def get_owner(self, instance):
         return instance.event.owner.id
+    
+class EventCategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = EventCategory
+        fields = '__all__'
+
+class FAQSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FAQ
+        fields = '__all__'
 
  
 class EventSerializer(serializers.ModelSerializer): 
+    event_faq = FAQSerializer(many=True, read_only=False)
+    category = EventCategorySerializer()
+
     tickets = TicketSerializer(
         many=True,
         read_only=True,
@@ -111,6 +121,10 @@ class EventSerializer(serializers.ModelSerializer):
 
     lowest_price = serializers.SerializerMethodField(
         method_name='get_lowest_price',
+    )
+    
+    is_paid = serializers.SerializerMethodField(
+        method_name='get_is_paid',
     )
 
     highest_price = serializers.SerializerMethodField(
@@ -141,24 +155,36 @@ class EventSerializer(serializers.ModelSerializer):
             "title",
             "description",
             "image",
-            "liked",
+            "is_paid",
+            "category",
             "featured",
-            "location",
-            "date",
+            "country",
+            "state",
+            "city",
+            "venue",
+            "event_faq", 
+            "start_date",
+            "end_date",
             "start_time",
             "end_time",
             "website",
             "owner",
             "organizer",
-            "qr_code"
-          ]
+            "qr_code",
+            "terms"
+        ]
+        # depth = 1
 
     def get_lowest_price(self, instance):
         if not instance.qr_code:
             instance.generate_qr_code()
         if instance.tickets.exists():
             return instance.tickets.order_by('price').first().price 
-
+    
+    def get_is_paid(self, instance):
+        tickets = instance.tickets.all()
+        for ticket in tickets:
+            return ticket.is_paid
 
     def get_highest_price(self, obj):
         if obj.tickets.exists():
@@ -180,3 +206,14 @@ class EventSerializer(serializers.ModelSerializer):
             for item in tickets:
                 quantity += item.quantity
             return quantity
+    
+    def create(self, validated_data):
+        faq_data = validated_data.pop('event_faq', [])
+        category_data = validated_data.pop('category')
+        category = EventCategory.objects.create(**category_data)
+        event = Event.objects.create(category=category, **validated_data)
+        for faq_item in faq_data:
+            faq = FAQ.objects.create(**faq_item)
+            event.event_faq.add(faq)  # Associate the FAQ with the Event
+        
+        return event

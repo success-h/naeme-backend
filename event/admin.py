@@ -5,3 +5,5 @@ from event.models import *
 admin.site.register(Event)
 admin.site.register(Ticket)
 admin.site.register(PaidTicket)
+admin.site.register(FAQ)
+admin.site.register(EventCategory)
