@@ -31,7 +31,7 @@ class Event(models.Model):
     title = models.CharField(max_length=200)
     description = models.CharField(max_length=5000, blank=True, null=True)
     terms = models.CharField(max_length=5000, blank=True, null=True)
-    category = models.ForeignKey(EventCategory, blank=True, null=True, on_delete=models.CASCADE)
+    category = models.CharField(max_length=100, blank=True, null=True, default="Music Concert")
     country = models.CharField(max_length=200, default="Nigeria")
     event_faq = models.ManyToManyField(FAQ, blank=True)
     state = models.CharField(max_length=200, default="Lagos")
