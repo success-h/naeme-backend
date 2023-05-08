@@ -207,11 +207,10 @@ class EventSerializer(serializers.ModelSerializer):
     
     def create(self, validated_data):
         faq_data = validated_data.pop('event_faq', [])
-        category_data = validated_data.pop('category')
-        category = EventCategory.objects.create(**category_data)
-        event = Event.objects.create(category=category, **validated_data)
+        event = Event.objects.create(**validated_data)
+
         for faq_item in faq_data:
             faq = FAQ.objects.create(**faq_item)
             event.event_faq.add(faq)  # Associate the FAQ with the Event
-        
+
         return event
