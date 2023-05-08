@@ -107,8 +107,6 @@ class FAQSerializer(serializers.ModelSerializer):
  
 class EventSerializer(serializers.ModelSerializer): 
     event_faq = FAQSerializer(many=True, read_only=False)
-    category = EventCategorySerializer()
-
     tickets = TicketSerializer(
         many=True,
         read_only=True,
