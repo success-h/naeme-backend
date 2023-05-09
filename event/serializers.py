@@ -82,7 +82,7 @@ class TicketSerializer(serializers.ModelSerializer):
   
     class Meta:
         model = Ticket
-        fields = ["id", "price", "lowest_price", "highest_price", "title", "quantity", "event", "owner"]
+        fields = ["id", "price", "lowest_price", "highest_price", "title", "quantity", "event", "owner", "is_paid"]
         # depth = 1
 
     def get_lowest_price(self, instance):
@@ -204,6 +204,13 @@ class EventSerializer(serializers.ModelSerializer):
             for item in tickets:
                 quantity += item.quantity
             return quantity
+    
+    def get_paid(self, obj):
+        if obj.tickets.exists():
+            if obj.tickets.filter(is_paid=True).exists():
+                return True
+            else:
+                return False
     
     def create(self, validated_data):
         faq_data = validated_data.pop('event_faq', [])
