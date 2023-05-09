@@ -205,7 +205,7 @@ class EventSerializer(serializers.ModelSerializer):
                 quantity += item.quantity
             return quantity
     
-    def get_paid(self, obj):
+    def get_is_paid(self, obj):
         if obj.tickets.exists():
             if obj.tickets.filter(is_paid=True).exists():
                 return True

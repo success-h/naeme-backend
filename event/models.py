@@ -79,7 +79,7 @@ class Ticket(models.Model):
     event = models.ForeignKey('Event', on_delete=models.CASCADE, related_name='tickets')
     quantity = models.IntegerField(default=0)
     price = models.IntegerField(blank=True, null=True)
-    is_paid = models.BooleanField(default=True)
+    is_paid = models.BooleanField(default=False)
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False) 
      
     def __str__(self):
