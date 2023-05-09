@@ -106,7 +106,7 @@ class FAQSerializer(serializers.ModelSerializer):
 
  
 class EventSerializer(serializers.ModelSerializer): 
-    event_faq = FAQSerializer(many=True, read_only=False)
+    event_faq = FAQSerializer(many=True, read_only=False, required=False)
     tickets = TicketSerializer(
         many=True,
         read_only=True,
@@ -211,6 +211,7 @@ class EventSerializer(serializers.ModelSerializer):
 
         for faq_item in faq_data:
             faq = FAQ.objects.create(**faq_item)
-            event.event_faq.add(faq)  # Associate the FAQ with the Event
+            event_faq = event.event_faq  # Get the related manager
+            event_faq.add(faq)
 
         return event
