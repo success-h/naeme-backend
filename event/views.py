@@ -14,7 +14,7 @@ class EventFilter(filters.FilterSet):
     title = filters.CharFilter(lookup_expr='icontains') 
     class Meta:
         model = Event
-        fields = ('title', "featured", "owner")
+        fields = ('title', "featured", "owner", "category")
 
 class PaidTicketFilter(filters.FilterSet):
     title = filters.CharFilter(lookup_expr='icontains')
