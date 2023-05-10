@@ -179,14 +179,14 @@ class EventSerializer(serializers.ModelSerializer):
         if instance.tickets.exists():
             return instance.tickets.order_by('price').first().price 
     
+    def get_highest_price(self, obj):
+        if obj.tickets.exists():
+            return obj.tickets.order_by('-price').first().price
     def get_is_paid(self, instance):
         tickets = instance.tickets.all()
         for ticket in tickets:
             return ticket.is_paid
 
-    def get_highest_price(self, obj):
-        if obj.tickets.exists():
-            return obj.tickets.order_by('-price').first().price
 
 
     def get_total_ticket_quantity(self, obj):
