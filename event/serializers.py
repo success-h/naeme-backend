@@ -19,8 +19,8 @@ class PaidTicketSerializer(serializers.ModelSerializer):
         method_name='get_start_time',
     )
 
-    date = serializers.SerializerMethodField(
-        method_name='get_date',
+    start_date = serializers.SerializerMethodField(
+        method_name='get_start_date',
     )    
     end_time = serializers.SerializerMethodField(
         method_name='get_end_time',
@@ -33,13 +33,13 @@ class PaidTicketSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = PaidTicket
-        fields = ["title", "event_name", "ticket_admin", "event", "date", "end_time", "start_time", "price", "ticket", "user", "used", "quantity", "transactionId", "id", "qr_code" ]
+        fields = ["title", "event_name", "ticket_admin", "event", "start_date", "end_time", "start_time", "price", "ticket", "user", "used", "quantity", "transactionId", "id", "qr_code" ]
 
-    def get_date(self, instance):
+    def get_start_date(self, instance):
         if not instance.event:
             instance.event = self.ticket.event.id
             print("hello:", self)
-        return instance.ticket.event.date
+        return instance.ticket.event.start_date
 
     def get_title(self, instance):
         if not instance.qr_code:
