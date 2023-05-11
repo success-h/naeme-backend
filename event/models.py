@@ -90,7 +90,7 @@ class Ticket(models.Model):
 class PaidTicket(models.Model):
     event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name='paid_tickets')
     ticket = models.ForeignKey(Ticket, related_name='paid_ticket', on_delete=models.CASCADE)
-    user = models.ForeignKey(User, related_name='ticket_user', on_delete=models.DO_NOTHING)
+    user = models.ForeignKey(User, related_name='ticket_user', on_delete=models.DO_NOTHING, null=True, blank=True)
     quantity = models.IntegerField(default=0) 
     created_at = models.DateTimeField(auto_now_add=True)
     transactionId = models.CharField(max_length=200, blank=True, null=True)
