@@ -20,7 +20,7 @@ class PaidTicketFilter(filters.FilterSet):
     title = filters.CharFilter(lookup_expr='icontains')
     class Meta:
         model = PaidTicket
-        fields = ('id', 'user')
+        fields = ('id', 'user', 'transactionId')
 
 # class TicketFilter(filters.FilterSet):
 #     title = filters.CharFilter(lookup_expr='icontains')
