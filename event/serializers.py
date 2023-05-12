@@ -1,10 +1,10 @@
 
-from .models import FAQ, Event, PaidTicket,Ticket, EventCategory
+from .models import FAQ, Event, BookedTicket,Ticket, EventCategory
 from rest_framework import  serializers
 from django.contrib.auth import get_user_model
 from django.core.files import File
 
-class PaidTicketSerializer(serializers.ModelSerializer):
+class BookedTicketSerializer(serializers.ModelSerializer):
 
     title = serializers.SerializerMethodField(
         method_name='get_title',
@@ -32,8 +32,8 @@ class PaidTicketSerializer(serializers.ModelSerializer):
  
 
     class Meta:
-        model = PaidTicket
-        fields = ["title", "event_name", "ticket_admin", "event", "start_date", "end_time", "start_time", "price", "ticket", "user", "used", "quantity", "transactionId", "id", "qr_code" ]
+        model = BookedTicket
+        fields = ["title", "event_name", "ticket_admin", "event", "start_date", "end_time", "booking_id", "start_time", "price", "ticket", "user", "used", "quantity", "transactionId", "id", "qr_code" ]
 
     def get_start_date(self, instance):
         if not instance.event:
@@ -112,7 +112,7 @@ class EventSerializer(serializers.ModelSerializer):
         read_only=True,
     )
 
-    paid_tickets = PaidTicketSerializer(
+    paid_tickets = BookedTicketSerializer(
         many=True,
         read_only=True,
     )

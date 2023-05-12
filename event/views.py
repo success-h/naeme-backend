@@ -3,8 +3,8 @@ from rest_framework import status
 from rest_framework import pagination
 
 from event.pagination import CustomPagination
-from .models import Ticket, Event, PaidTicket, FAQ, EventCategory
-from .serializers import EventSerializer, FAQSerializer, PaidTicket, TicketSerializer, PaidTicketSerializer,  EventCategorySerializer
+from .models import Ticket, Event, BookedTicket, FAQ, EventCategory
+from .serializers import EventSerializer, FAQSerializer, BookedTicket, TicketSerializer, BookedTicketSerializer,  EventCategorySerializer
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework import viewsets
 from django_filters import rest_framework as filters
@@ -16,11 +16,11 @@ class EventFilter(filters.FilterSet):
         model = Event
         fields = ('title', "featured", "owner", "category")
 
-class PaidTicketFilter(filters.FilterSet):
+class BookedTicketFilter(filters.FilterSet):
     title = filters.CharFilter(lookup_expr='icontains')
     class Meta:
-        model = PaidTicket
-        fields = ('id', 'user', 'transactionId')
+        model = BookedTicket
+        fields = ('id', 'user', 'transactionId', 'booking_id')
 
 # class TicketFilter(filters.FilterSet):
 #     title = filters.CharFilter(lookup_expr='icontains')
@@ -58,11 +58,11 @@ class TicketViewSet(viewsets.ModelViewSet):
     # filterset_class = TicketFilter
 
 
-class PaidTicketViewSet(viewsets.ModelViewSet):
+class BookedTicketViewSet(viewsets.ModelViewSet):
     permisson_classes = [IsAuthenticatedOrReadOnly]
     lookup_field = 'id'
-    serializer_class = PaidTicketSerializer
-    queryset = PaidTicket.objects.all()
-    filterset_class = PaidTicketFilter
+    serializer_class = BookedTicketSerializer
+    queryset = BookedTicket.objects.all()
+    filterset_class = BookedTicketFilter
 
  

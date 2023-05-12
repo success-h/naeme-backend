@@ -87,7 +87,7 @@ class Ticket(models.Model):
 
 
 
-class PaidTicket(models.Model):
+class BookedTicket(models.Model):
     event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name='paid_tickets')
     ticket = models.ForeignKey(Ticket, related_name='paid_ticket', on_delete=models.CASCADE)
     user = models.ForeignKey(User, related_name='ticket_user', on_delete=models.DO_NOTHING, null=True, blank=True)
@@ -97,7 +97,8 @@ class PaidTicket(models.Model):
     used = models.BooleanField(default=False)
     qr_code = models.ImageField(upload_to='qr_codes', blank=True, null=True)
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False) 
-
+    booking_id = models.CharField(max_length=200, default=uuid.uuid4) 
+    
     def __str__(self):
         return self.ticket.title
 
