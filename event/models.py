@@ -96,7 +96,8 @@ class BookedTicket(models.Model):
     transactionId = models.CharField(max_length=200, blank=True, null=True)
     used = models.BooleanField(default=False)
     qr_code = models.ImageField(upload_to='qr_codes', blank=True, null=True)
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False) 
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    email = models.EmailField(null=True, blank=True)
     booking_id = models.CharField(max_length=200, default=uuid.uuid4) 
     
     def __str__(self):

@@ -33,7 +33,7 @@ class BookedTicketSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = BookedTicket
-        fields = ["title", "event_name", "ticket_admin", "event", "start_date", "end_time", "booking_id", "start_time", "price", "ticket", "user", "used", "quantity", "transactionId", "id", "qr_code" ]
+        fields = ["title", "event_name", "ticket_admin", "event", "start_date", "end_time", "email", "booking_id", "start_time", "price", "ticket", "user", "used", "quantity", "transactionId", "id", "qr_code" ]
 
     def get_start_date(self, instance):
         if not instance.event:
