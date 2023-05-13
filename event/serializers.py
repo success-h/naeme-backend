@@ -21,6 +21,10 @@ class BookedTicketSerializer(serializers.ModelSerializer):
 
     start_date = serializers.SerializerMethodField(
         method_name='get_start_date',
+    ) 
+    
+    end_date = serializers.SerializerMethodField(
+        method_name='get_end_date',
     )    
     end_time = serializers.SerializerMethodField(
         method_name='get_end_time',
@@ -33,13 +37,19 @@ class BookedTicketSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = BookedTicket
-        fields = ["title", "event_name", "ticket_admin", "event", "start_date", "end_time", "email", "booking_id", "start_time", "price", "ticket", "user", "used", "quantity", "transactionId", "id", "qr_code" ]
+        fields = ["title", "event_name", "end_date", "ticket_admin", "event", "start_date", "end_time", "email", "booking_id", "start_time", "price", "ticket", "user", "used", "quantity", "transactionId", "id", "qr_code" ]
 
     def get_start_date(self, instance):
         if not instance.event:
             instance.event = self.ticket.event.id
             print("hello:", self)
         return instance.ticket.event.start_date
+    
+    def get_end_date(self, instance):
+        if not instance.event:
+            instance.event = self.ticket.event.id
+            print("hello:", self)
+        return instance.ticket.event.end_date
 
     def get_title(self, instance):
         if not instance.qr_code:
