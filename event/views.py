@@ -23,11 +23,11 @@ class BookedTicketFilter(filters.FilterSet):
         model = BookedTicket
         fields = ('id', 'user', 'transactionId', 'booking_id')
 
-# class TicketFilter(filters.FilterSet):
-#     title = filters.CharFilter(lookup_expr='icontains')
-#     class Meta:
-#         model = Ticket
-#         fields = ('id')
+class TicketFilter(filters.FilterSet):
+    title = filters.CharFilter(lookup_expr='icontains')
+    class Meta:
+        model = Ticket
+        fields = ('id', 'event',)
          
 
 
@@ -56,7 +56,7 @@ class TicketViewSet(viewsets.ModelViewSet):
     lookup_field = 'id'
     serializer_class = TicketSerializer
     queryset = Ticket.objects.all()
-    # filterset_class = TicketFilter
+    filterset_class = TicketFilter
 
 
 class BookedTicketViewSet(viewsets.ModelViewSet):
