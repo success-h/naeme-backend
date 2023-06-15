@@ -6,6 +6,8 @@ from .models import User
 import os
 from rest_framework.exceptions import AuthenticationFailed
 from .register import register_social_user
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -15,7 +17,21 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ["id", "email", "name", "password", "image"]
         extra_kwargs = {"password": {"write_only": True}}
 
+    def create(self, validated_data):
+        user = User.objects.create_user(**validated_data)
+        return user
 
+class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    def validate(self, attrs):
+        data = super().validate(attrs)
+        refresh = self.get_token(self.user)
+
+        data['refresh'] = str(refresh)
+        data['access'] = str(refresh.access_token)
+
+        return data
+    
+    
 class GoogleSocialAuthSerializer(serializers.Serializer):
     auth_token = serializers.CharField()
 

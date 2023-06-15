@@ -39,7 +39,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     username = None
     name = models.CharField(max_length=255, db_index=True)
     email = models.EmailField(max_length=255, unique=True, db_index=True)
-    image = models.CharField(max_length=1055, unique=False, db_index=True, null=True, blank=True)
+    image = models.ImageField(upload_to='user_images/', null=True, blank=True)
     is_verified = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     is_admin = models.BooleanField(default=False)

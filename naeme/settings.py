@@ -10,6 +10,8 @@ warnings.filterwarnings("ignore", message="No directory at", module="whitenoise.
 BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(os.path.join(BASE_DIR, '.env'))
 
+SMS_API_KEY = os.getenv('SMS_API_KEY')
+
  
 
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
@@ -86,6 +88,14 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'naeme.urls'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'your-email@gmail.com'
+EMAIL_HOST_PASSWORD = 'your-email-password'
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = 'your-email@gmail.com'
 
 
 TEMPLATES = [

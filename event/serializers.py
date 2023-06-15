@@ -1,8 +1,8 @@
 
 from .models import FAQ, Event, BookedTicket,Ticket, EventCategory
 from rest_framework import  serializers
-from django.contrib.auth import get_user_model
 from django.core.files import File
+
 
 class BookedTicketSerializer(serializers.ModelSerializer):
 
