@@ -69,7 +69,7 @@ class GoogleSocialAuthSerializer(serializers.Serializer):
         provider = 'google'
 
         return register_social_user(
-            provider=provider, user_id=user_id, email=email, name=name)
+            provider=provider, user_id=user_id, email=email, name=name,image=image)
 
 
 class TwitterAuthSerializer(serializers.Serializer):

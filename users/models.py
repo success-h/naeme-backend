@@ -57,6 +57,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     name = models.CharField(max_length=255, db_index=True)
     email = models.EmailField(max_length=255, unique=True, db_index=True)
     # image = models.FileField(upload_to='user_images/', validators=[validate_image], null=True, blank=True, default="https://res.cloudinary.com/dp3a4be7p/image/upload/v1686984832/user_eatapc.png")
+    image = models.CharField(max_length=3000, null=True, blank=True)
     is_verified = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     is_admin = models.BooleanField(default=False)
