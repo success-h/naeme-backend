@@ -7,6 +7,13 @@ from django.contrib.auth.models import (
 
 from django.db import models
 from rest_framework_simplejwt.tokens import RefreshToken
+from django.db import models
+from django.core.exceptions import ValidationError
+from django.core.files.images import get_image_dimensions
+from django.dispatch import receiver
+from django.urls import reverse
+from django_rest_passwordreset.signals import reset_password_token_created
+from django.core.mail import send_mail
 
 
 class UserManager(BaseUserManager):
@@ -34,12 +41,22 @@ class UserManager(BaseUserManager):
 AUTH_PROVIDERS = {'google': 'google',
                   'twitter': 'twitter', 'email': 'email'}
 
+def validate_image(value):
+    """
+    Validate that the uploaded file is an image.
+    """
+    if isinstance(value, str):
+        return  # Skip validation for string inputs
+    elif value:
+        width, height = get_image_dimensions(value)
+        if width < 10 or height < 10:
+            raise ValidationError("The image must have a minimum resolution of 10x10 pixels.")
 
 class User(AbstractBaseUser, PermissionsMixin):
     username = None
     name = models.CharField(max_length=255, db_index=True)
     email = models.EmailField(max_length=255, unique=True, db_index=True)
-    image = models.ImageField(upload_to='user_images/', null=True, blank=True)
+    # image = models.FileField(upload_to='user_images/', validators=[validate_image], null=True, blank=True, default="https://res.cloudinary.com/dp3a4be7p/image/upload/v1686984832/user_eatapc.png")
     is_verified = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     is_admin = models.BooleanField(default=False)
@@ -64,3 +81,26 @@ class User(AbstractBaseUser, PermissionsMixin):
             'refresh': str(refresh),
             'access': str(refresh.access_token)
         }
+        
+
+class PasswordReset(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    confirmation_code = models.CharField(max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    
+@receiver(reset_password_token_created)
+def password_reset_token_created(sender, instance, reset_password_token, *args, **kwargs):
+
+    email_plaintext_message = "{}?token={}".format(reverse('password_reset:reset-password-request'), reset_password_token.key)
+    print("print:", email_plaintext_message)
+    # send_mail(
+    #     # title:
+    #     "Password Reset for {title}".format(title="Some website title"),
+    #     # message:
+    #     email_plaintext_message,
+    #     # from:
+    #     "tech@naeme.app",
+    #     # to:
+    #     [reset_password_token.user.email]
+    # )

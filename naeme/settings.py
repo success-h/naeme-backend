@@ -21,6 +21,15 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
 DEBUG = distutils.util.strtobool(os.getenv('DEBUG'))
 
 
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'tech@naeme.app'
+EMAIL_HOST_PASSWORD = '$uccess1123'
+EMAIL_PORT = 587
+
+
 ALLOWED_HOSTS = ['.vercel.app', '.now.sh', '127.0.0.1', "localhost"]
 CORS_ALLOWED_ORIGINS = [
     "https://naeme.vercel.app",
@@ -47,7 +56,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'rest_framework_simplejwt.token_blacklist',
-    'django_filters'
+    'django_filters',
+    'django_rest_passwordreset'
 ]
 
 
@@ -92,10 +102,10 @@ ROOT_URLCONF = 'naeme.urls'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'your-email@gmail.com'
-EMAIL_HOST_PASSWORD = 'your-email-password'
+EMAIL_HOST_USER = 'tech@naeme.app'
+EMAIL_HOST_PASSWORD = '$uccess1123'
 EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = 'your-email@gmail.com'
+DEFAULT_FROM_EMAIL = 'tech@naeme.app'
 
 
 TEMPLATES = [

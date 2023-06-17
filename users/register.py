@@ -5,7 +5,7 @@ import random
 from rest_framework.exceptions import AuthenticationFailed
 import os
 
-def register_social_user(provider, user_id, email, name, image):
+def register_social_user(provider, user_id, email, name):
     filtered_user_by_email = User.objects.filter(email=email)
 
     if filtered_user_by_email.exists():
@@ -21,7 +21,7 @@ def register_social_user(provider, user_id, email, name, image):
         return {
             'username': registered_user.name,
             'email': registered_user.email,
-            'image': registered_user.image,
+            # 'image': registered_user.image,
             'tokens': registered_user.tokens(),
             'auth_provider': registered_user.auth_provider,
             'id': registered_user.id,
@@ -30,7 +30,7 @@ def register_social_user(provider, user_id, email, name, image):
 
     else:
         user = {
-            'name': name, 'email': email, "image": image,
+            'name': name, 'email': email,
             'password': os.getenv('SOCIAL_SECRET')}
         user = User.objects.create_user(**user)
         user.is_verified = True
@@ -42,7 +42,7 @@ def register_social_user(provider, user_id, email, name, image):
         return {
             'email': new_user.email,
             'username': new_user.name,
-            'image': new_user.image,
+            # 'image': new_user.image,
             'tokens': new_user.tokens(),
             'auth_provider': new_user.auth_provider,
             'id': new_user.id,

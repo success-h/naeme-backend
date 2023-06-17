@@ -14,12 +14,23 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ["id", "email", "name", "password", "image"]
+        fields = ["id", "email", "name"]
         extra_kwargs = {"password": {"write_only": True}}
 
     def create(self, validated_data):
         user = User.objects.create_user(**validated_data)
         return user
+    
+    
+class ForgotPasswordSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+
+    
+class ConfirmPasswordResetSerializer(serializers.Serializer):
+    confirmation_code = serializers.CharField()
+    new_password = serializers.CharField(write_only=True)
+
+
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self, attrs):
@@ -58,7 +69,7 @@ class GoogleSocialAuthSerializer(serializers.Serializer):
         provider = 'google'
 
         return register_social_user(
-            provider=provider, user_id=user_id, email=email, name=name, image=image)
+            provider=provider, user_id=user_id, email=email, name=name)
 
 
 class TwitterAuthSerializer(serializers.Serializer):
@@ -78,7 +89,7 @@ class TwitterAuthSerializer(serializers.Serializer):
             user_id = user_info['id_str']
             email = user_info['email']
             name = user_info['name']
-            image = user_info['profile_image_url_https']
+            # image = user_info['profile_image_url_https']
             provider = 'twitter'
         except:
             raise serializers.ValidationError(
@@ -86,4 +97,4 @@ class TwitterAuthSerializer(serializers.Serializer):
             )
 
         return register_social_user(
-            provider=provider, user_id=user_id, email=email, name=name, image=image)
+            provider=provider, user_id=user_id, email=email, name=name)
