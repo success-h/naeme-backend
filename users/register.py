@@ -30,7 +30,7 @@ def register_social_user(provider, user_id, email, name, image):
 
     else:
         user = {
-            'name': name, 'email': email, "image":image,
+            'name': name, 'email': email, "image": image,
             'password': os.getenv('SOCIAL_SECRET')}
         user = User.objects.create_user(**user)
         user.is_verified = True
