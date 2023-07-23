@@ -34,6 +34,7 @@ ALLOWED_HOSTS = ['.vercel.app', '.now.sh', '127.0.0.1', "localhost"]
 CORS_ALLOWED_ORIGINS = [
     "https://naeme.vercel.app",
     "https://naeme-event.vercel.app",
+    "https://naeme-events.vercel.app",
     "https://www.naeme.app",
     "https://naeme.app",
     "http://localhost:3000",
