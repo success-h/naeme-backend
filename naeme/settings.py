@@ -36,7 +36,7 @@ CORS_ALLOWED_ORIGINS = [
     "https://naeme-event.vercel.app",
     "https://naeme-events.vercel.app",
     "https://www.naeme.app",
-    "https://touring-app.vercel.app/",
+    "https://touring-app.vercel.app",
     "https://naeme.app",
     "http://localhost:3000",
     "https://co-lab-challange.vercel.app",
