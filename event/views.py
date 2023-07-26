@@ -33,7 +33,6 @@ class TicketFilter(filters.FilterSet):
 
 class EventList(viewsets.ModelViewSet):
     permisson_classes = [IsAuthenticatedOrReadOnly]
-    pagination_class = CustomPagination
     serializer_class = EventSerializer
     queryset = Event.objects.all()
     filterset_class = EventFilter
