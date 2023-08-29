@@ -2,6 +2,8 @@
 from .models import FAQ, Event, BookedTicket,Ticket, EventCategory
 from rest_framework import  serializers
 from django.core.files import File
+from django.db.models import Sum
+
 
 
 class BookedTicketSerializer(serializers.ModelSerializer):
@@ -88,11 +90,17 @@ class TicketSerializer(serializers.ModelSerializer):
         method_name='get_owner',
         read_only=True
     )
+    
+    available_tickets = serializers.SerializerMethodField(
+        method_name='get_available_tickets_quantity',
+        read_only=True,
+    )
+
 
   
     class Meta:
         model = Ticket
-        fields = ["id", "price", "lowest_price", "highest_price", "title", "quantity", "event", "owner", "is_paid"]
+        fields = ["id", "price", "lowest_price", "highest_price", "title", "quantity", "available_tickets", "event", "owner", "is_paid"]
         # depth = 1
 
     def get_lowest_price(self, instance):
@@ -103,6 +111,13 @@ class TicketSerializer(serializers.ModelSerializer):
 
     def get_owner(self, instance):
         return instance.event.owner.id
+    
+    def get_available_tickets_quantity(self, instance):
+        booked_tickets = BookedTicket.objects.filter(ticket=instance, used=False)
+        booked_quantity_sum = booked_tickets.aggregate(Sum('quantity'))['quantity__sum']
+        booked_quantity_sum = booked_quantity_sum or 0  # Handle None case
+        available_quantity = instance.quantity - booked_quantity_sum
+        return max(available_quantity, 0)  # Ensure the available quantity is not negative
     
 class EventCategorySerializer(serializers.ModelSerializer):
     class Meta:
