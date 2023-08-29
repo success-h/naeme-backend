@@ -92,7 +92,7 @@ class TicketSerializer(serializers.ModelSerializer):
     )
     
     available_tickets = serializers.SerializerMethodField(
-        method_name='get_available_tickets_quantity',
+        method_name='get_available_tickets',
         read_only=True,
     )
 
@@ -112,12 +112,13 @@ class TicketSerializer(serializers.ModelSerializer):
     def get_owner(self, instance):
         return instance.event.owner.id
     
-    def get_available_tickets_quantity(self, instance):
+    def get_available_tickets(self, instance):
         booked_tickets = BookedTicket.objects.filter(ticket=instance, used=False)
         booked_quantity_sum = booked_tickets.aggregate(Sum('quantity'))['quantity__sum']
-        booked_quantity_sum = booked_quantity_sum or 0  # Handle None case
+        booked_quantity_sum = booked_quantity_sum or 0  
         available_quantity = instance.quantity - booked_quantity_sum
-        return max(available_quantity, 0)  # Ensure the available quantity is not negative
+        return max(available_quantity, 0)   
+    
     
 class EventCategorySerializer(serializers.ModelSerializer):
     class Meta:
