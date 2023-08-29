@@ -101,8 +101,7 @@ class TicketSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ticket
         fields = ["id", "price", "lowest_price", "highest_price", "title", "quantity", "available_tickets", "event", "owner", "is_paid"]
-        # depth = 1
-
+ 
     def get_lowest_price(self, instance):
         return instance.event.tickets.order_by('price').first().price
     
@@ -244,7 +243,7 @@ class EventSerializer(serializers.ModelSerializer):
 
         for faq_item in faq_data:
             faq = FAQ.objects.create(**faq_item)
-            event_faq = event.event_faq  # Get the related manager
+            event_faq = event.event_faq  
             event_faq.add(faq)
 
         return event
