@@ -1,7 +1,6 @@
 
 from .models import FAQ, Event, BookedTicket,Ticket, EventCategory
 from rest_framework import  serializers
-from django.core.files import File
 from django.db.models import Sum
 
 
